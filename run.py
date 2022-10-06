@@ -13,13 +13,14 @@ def getSearchedStats(query):
     countData = api.get_recent_tweets_count(query, granularity='day')
 
     # Grabs specific data wanted (todays count, weekly count)
-    dayCount = countData.data[-1]['tweet_count']
-    weekCount = countData.meta['total_tweet_count']
+    dayCount = "{:,}".format(countData.data[-1]['tweet_count'])
+    weekCount = "{:,}".format(countData.meta['total_tweet_count'])
 
     return {'dayCount':str(dayCount), 'weekCount':str(weekCount)}
 
 @app.route('/')
 def index():
     countData = getSearchedStats('#lol')
-    return("Day count: " + countData['dayCount'] + "</br> Week Count: " + countData['weekCount'])
+    return render_template('index.html', dayCount=countData['dayCount'], weekCount=countData['weekCount'])
+    # return("Day count: " + countData['dayCount'] + "</br> Week Count: " + countData['weekCount'])
     

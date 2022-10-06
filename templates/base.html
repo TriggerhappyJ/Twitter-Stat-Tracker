@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    {% block head %}
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="description" content="What's happening on Twitter today?" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='screen.css') }}" />
+
+    {% endblock %}
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Twitter-logo.svg" width="32" height="22">
+      <h4>Twitter Statistics</h4>
+    </div>
+
+    {% block content %}{% endblock %}
+
+    {% block footer %}
+    <div id="footer">
+      {{ disclaimer|upper }}
+    </div>
+    {% endblock %}
+
+  </body>
+  
+
+</html>

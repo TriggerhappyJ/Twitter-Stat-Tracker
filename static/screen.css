@@ -1,0 +1,147 @@
+:root {
+    --blue: #1DA1F2;
+    --dkblue: #15202B;
+    --ltgrey: #4c5259;
+    --grey: #292F33;
+    --dkgrey: #1f282f;
+    --white: #ffffff;
+}
+
+* {
+    color: var(--white);
+}
+
+html, body {
+    background-color: var(--dkblue);
+    margin: 0;
+    font-family: 'Myriad Pro Semibold';
+    text-align: center;
+}
+
+h2, h3, h4 {
+    margin: 0px;
+}
+
+h1, .medCounter {
+    font-size: 64px;
+}
+
+h2 {
+    font-size: 48px;
+}
+
+h3 {
+    font-size: 32px;
+}
+
+h4 {
+    font-size: 24px;
+}
+
+p {
+    font-size: 10px;
+    font-family: 'Myriad Pro Regular';
+}
+
+hr.solid {
+    border: 0;
+    border-top: 5px solid var(--dkgrey);
+    width: 80%;
+}
+
+.navbar {
+    width: 100%;
+    background-color: var(--dkgrey);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0px;
+}
+
+.navbar img {
+    height: 50px;
+    display: inline-block;
+}
+
+.navbar h4 {
+    display: inline-block;
+    padding: 0px 10px;
+}
+
+.countContainer {
+    display: inline-block;
+    padding: 40px;
+}
+
+.numContainer {
+    margin: auto;
+    width: fit-content;
+    padding: 5px 10px;
+    background-color: var(--dkgrey);
+    border-radius: 15px;
+}
+
+.lrgCounter {
+    font-size: 96px;
+}
+
+.statsSearch {
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+
+form {
+    margin-top: 15px;
+}
+
+input[type=text] {
+    width: 232px;
+    height: 30px;
+    border-radius: 15px;
+    border: 0px;
+    background-color: var(--dkgrey);
+    font-family: "Myriad Pro Semibold";
+    font-size: 20px;
+    vertical-align: middle;
+    padding-left: 10px;
+}
+
+input[type=text]::placeholder {
+    color: var(--ltgrey);
+}
+
+input[type=submit]
+{
+    width: 100px;
+    height: 30px;
+    border-radius: 15px;
+    border: 0px;
+    background-color: var(--blue);
+    font-family: "Myriad Pro Semibold";
+    font-size: 20px;
+    vertical-align: middle;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.graphContainer {
+    margin: auto;
+    width: 520px;
+    border-bottom: 5px solid var(--grey);
+}
+
+.graphBar {
+    width: 30px;
+    height: 200px;
+    rotate: 180;
+    background-color: var(--blue);
+    margin: 0px 15px;
+    display: inline-block;
+    padding: 0px;
+}
+
+.blue {
+    color: var(--blue);
+}
+

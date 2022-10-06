@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+      
+{% block title %}Twitter Satistics{% endblock %}
+
+{% block content %}
+
+
+<div class="container">
+    <h1>What's happening on <span class="blue">Twitter</span> today?</h1>
+    <div>
+        <div class="numContainer">
+        <span class="lrgCounter">732,213,123</span>
+        </div>
+        <h3>Tweets sent today</h3>
+    </div>
+    <div>
+        <div class="countContainer">
+            <div class="numContainer">
+            <span class="medCounter">2,839,121,291</span>
+            </div>
+            <h4>Tweets sent this week</h4>
+        </div>
+        <div class="countContainer">
+            <div class="numContainer">
+            <span class="medCounter">421,223,623,712</span>
+            </div>
+            <h4>Tweets sent this year</h4>
+        </div>
+    </div>
+    <p>Estimated counts based off data from internetlivestats.com</p>
+</div>
+<hr class="solid">
+<div class="container">
+    <div class="statsSearch">
+        <h3>Look for stats of a <span class="blue">#hashtag</u></span> or <span class="blue">@username</span></h3>
+        <form action="POST">
+            <input type="text" placeholder="#example">
+            <input type="submit" value="Search">
+        </form>
+    </div>
+    <h2><span class="blue">#example</span></h2>
+    <div>
+        <div class="countContainer">
+            <div class="numContainer">
+            <span class="medCounter">{{dayCount}}</span>
+            </div>
+            <h4>Tweets sent with <span class="blue">#example</span> today</h4>
+        </div>
+        <div class="countContainer">
+            <div class="numContainer">
+            <span class="medCounter">{{weekCount}}</span>
+            </div>
+            <h4>Tweets sent with <span class="blue">#example</span> this week</h4>
+        </div>
+    </div>
+    <div class="graphContainer">
+        <span class="graphBar" style="height: 180px"></span>
+        <span class="graphBar" style="height: 150px"></span>
+        <span class="graphBar" style="height: 160px"></span>
+        <span class="graphBar" style="height: 190px"></span>
+        <span class="graphBar" style="height: 200px"></span>
+        <span class="graphBar" style="height: 175px"></span>
+        <span class="graphBar" style="height: 120px"></span>
+    </div>
+    <p>Not affiliated with Twitter, Twitter is a Trademark of Twitter, Inc.</p>
+
+</div>
+
+       
+{% endblock %}
