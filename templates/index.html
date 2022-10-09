@@ -9,20 +9,20 @@
     <h1>What's happening on <span class="blue">Twitter</span> today?</h1>
     <div>
         <div class="numContainer">
-        <span class="lrgCounter">732,213,123</span>
+        <span class="lrgCounter" id="totalToday">732,213,123</span>
         </div>
         <h3>Tweets sent today</h3>
     </div>
     <div>
         <div class="countContainer">
             <div class="numContainer">
-            <span class="medCounter">2,839,121,291</span>
+            <span class="medCounter" id="totalWeek">2,839,121,291</span>
             </div>
             <h4>Tweets sent this week</h4>
         </div>
         <div class="countContainer">
             <div class="numContainer">
-            <span class="medCounter">421,223,623,712</span>
+            <span class="medCounter" id="totalYear">421,223,623,712</span>
             </div>
             <h4>Tweets sent this year</h4>
         </div>
@@ -66,6 +66,59 @@
     <p>Not affiliated with Twitter, Twitter is a Trademark of Twitter, Inc.</p>
 
 </div>
+
+<script>
+
+var current = new Date();
+
+let secondAmount = 6123;
+let totalDay =  current.getSeconds() + (((current.getHours() * 60) + current.getMinutes()) * 60) * 6000;
+let totalWeek = weekCalc();
+let totalYear = yearCalc();
+
+function weekCalc()
+{
+    if (current.getDay() == 0) {
+        todayNum = 6;
+    } else {
+        todayNum = current.getDay-1;
+    }
+    return totalDay+((((todayNum*24)*60)*60)*secondAmount);
+}
+
+function yearCalc()
+{
+    return ((((getDayYear()*24)*60)*60)*secondAmount)
+}
+
+function getDayYear()
+{
+    const timestamp1 = Date.UTC(
+        current.getFullYear(),
+        current.getMonth(),
+        current.getDate(),
+    );
+
+    const timestamp2 = Date.UTC(current.getFullYear(), 0, 0);
+
+    const diffInMs = timestamp1 - timestamp2;
+
+    const diffInDays = diffInMs / 1000 / 60 / 60;
+
+    return diffInDays;
+}
+
+setInterval(updateTotals, 100)
+function updateTotals()
+{
+    document.getElementById("totalToday").textContent=totalDay.toLocaleString("en-US");
+    document.getElementById("totalWeek").textContent=totalWeek.toLocaleString("en-US");
+    document.getElementById("totalYear").textContent=totalYear.toLocaleString("en-US");
+    totalDay += Math.trunc(secondAmount/10);
+    totalWeek += Math.trunc(secondAmount/10);
+    totalYear += Math.trunc(secondAmount/10);
+}
+</script>
 
        
 {% endblock %}
