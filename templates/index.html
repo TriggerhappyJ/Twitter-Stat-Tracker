@@ -9,20 +9,20 @@
     <h1>What's happening on <span class="blue">Twitter</span> today?</h1>
     <div>
         <div class="numContainer">
-        <span class="lrgCounter" id="totalToday">732,213,123</span>
+        <span class="lrgCounter" id="totalToday">0</span>
         </div>
         <h3>Tweets sent today</h3>
     </div>
     <div>
         <div class="countContainer">
             <div class="numContainer">
-            <span class="medCounter" id="totalWeek">2,839,121,291</span>
+            <span class="medCounter" id="totalWeek">0</span>
             </div>
             <h4>Tweets sent this week</h4>
         </div>
         <div class="countContainer">
             <div class="numContainer">
-            <span class="medCounter" id="totalYear">421,223,623,712</span>
+            <span class="medCounter" id="totalYear">0</span>
             </div>
             <h4>Tweets sent this year</h4>
         </div>
@@ -33,79 +33,64 @@
 <div class="container">
     <div class="statsSearch">
         <h3>Look for stats of a <span class="blue">#hashtag</u></span> or <span class="blue">@username</span></h3>
-        <form action="POST">
-            <input type="text" placeholder="#example">
-            <input type="submit" value="Search">
+        <form id="search">
+            <input type="text" placeholder="#example" id="searchTerm">
+            <input type="button" value="Search" id="submit">
         </form>
     </div>
-    <h2><span class="blue">#example</span></h2>
+    <h2><span class="blue term">#example</span></h2>
     <div>
         <div class="countContainer">
             <div class="numContainer">
-            <span class="medCounter">{{dayCount}}</span>
+            <span class="medCounter" id="dayCount">0</span>
             </div>
-            <h4>Tweets sent with <span class="blue">#example</span> today</h4>
+            <h4>Tweets sent <span class="preposition">with </span><span class="blue term">#example</span> today</h4>
         </div>
         <div class="countContainer">
             <div class="numContainer">
-            <span class="medCounter">{{weekCount}}</span>
+            <span class="medCounter" id="weekCount">0</span>
             </div>
-            <h4>Tweets sent with <span class="blue">#example</span> this week</h4>
+            <h4>Tweets sent <span class="preposition">with </span><span class="blue term">#example</span> in the last 7 days</h4>
+
         </div>
     </div>
     <div class="graphContainer">
-        <span class="graphBar" style="height: 180px"></span>
-        <span class="graphBar" style="height: 150px"></span>
-        <span class="graphBar" style="height: 160px"></span>
-        <span class="graphBar" style="height: 190px"></span>
-        <span class="graphBar" style="height: 200px"></span>
-        <span class="graphBar" style="height: 175px"></span>
-        <span class="graphBar" style="height: 120px"></span>
+        <span class="graphBar" id="b1"></span>
+        <span class="graphBar" id="b2"></span>
+        <span class="graphBar" id="b3"></span>
+        <span class="graphBar" id="b4"></span>
+        <span class="graphBar" id="b5"></span>
+        <span class="graphBar" id="b6"></span>
+        <span class="graphBar" id="b7"></span>
     </div>
-    <h4>Last 7 days of Tweets sent with <span class="blue">#example</span></h4>
+    <h4>Last 7 days of Tweets sent <span class="preposition">with </span><span class="blue term">#example</span></h4>
     <p>Not affiliated with Twitter, Twitter is a Trademark of Twitter, Inc.</p>
 
 </div>
 
 <script>
-
 var current = new Date();
 
-let secondAmount = 6123;
-let totalDay =  current.getSeconds() + (((current.getHours() * 60) + current.getMinutes()) * 60) * 6000;
+let secondAmount = 10191;
+let totalDay =  current.getSeconds() + (((current.getHours() * 60) + current.getMinutes()) * 60) * secondAmount;
 let totalWeek = weekCalc();
 let totalYear = yearCalc();
 
+// Calculates estimated tweet count for week
 function weekCalc()
 {
     if (current.getDay() == 0) {
         todayNum = 6;
     } else {
-        todayNum = current.getDay-1;
+        todayNum = current.getDay()-1;
     }
     return totalDay+((((todayNum*24)*60)*60)*secondAmount);
 }
 
 function yearCalc()
 {
-    return ((((getDayYear()*24)*60)*60)*secondAmount)
-}
-
-function getDayYear()
-{
-    const timestamp1 = Date.UTC(
-        current.getFullYear(),
-        current.getMonth(),
-        current.getDate(),
-    );
-
-    const timestamp2 = Date.UTC(current.getFullYear(), 0, 0);
-
-    const diffInMs = timestamp1 - timestamp2;
-
-    const diffInDays = diffInMs / 1000 / 60 / 60;
-
-    return diffInDays;
+    const getDayYear = date => Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+    return (((((getDayYear(new Date())*24)*60)*60)*secondAmount)+totalDay)
 }
 
 setInterval(updateTotals, 100)
@@ -118,7 +103,51 @@ function updateTotals()
     totalWeek += Math.trunc(secondAmount/10);
     totalYear += Math.trunc(secondAmount/10);
 }
-</script>
+</script>    
 
-       
+<script>
+document.querySelector('#submit').addEventListener('click', () => {
+    var searchTerm = document.querySelector('#searchTerm').value;
+    
+    $.post("/search", {
+        searchTerm: searchTerm
+    });
+
+    $.get("/search", function(searchData) {
+    var searchData = $.parseJSON(searchData)
+
+
+
+    console.log(searchData)
+    
+    if (searchData.searchTerm.includes('@')){
+        document.querySelectorAll(".preposition").forEach(elem => elem.textContent='by ')
+    } else {
+        document.querySelectorAll(".preposition").forEach(elem => elem.textContent='with ')
+    }
+
+    document.querySelectorAll(".term").forEach(elem => elem.textContent=searchData.searchTerm);
+    document.querySelector("#dayCount").textContent=searchData.dayCount;
+    document.querySelector("#weekCount").textContent=searchData.weekCount;
+
+    var b1 = searchData.b1
+    var b2 = searchData.b2
+    var b3 = searchData.b3
+    var b4 = searchData.b4
+    var b5 = searchData.b5
+    var b6 = searchData.b6
+    var b7 = searchData.b7
+    const largest = Math.max(b1, b2, b3, b4, b5, b6, b7)
+
+    document.querySelector('#b1').style.height = ((b1/largest)*200).toString()+'px';
+    document.querySelector('#b2').style.height = ((b2/largest)*200).toString()+'px';
+    document.querySelector('#b3').style.height = ((b3/largest)*200).toString()+'px';
+    document.querySelector('#b4').style.height = ((b4/largest)*200).toString()+'px';
+    document.querySelector('#b5').style.height = ((b5/largest)*200).toString()+'px';
+    document.querySelector('#b6').style.height = ((b6/largest)*200).toString()+'px';
+    document.querySelector('#b7').style.height = ((b7/largest)*200).toString()+'px';
+
+})
+})
+</script>
 {% endblock %}
