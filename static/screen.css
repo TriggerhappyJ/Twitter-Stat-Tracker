@@ -127,9 +127,11 @@ input[type=button]
 
 .graphContainer {
     margin: auto;
-    padding-top: 200px;
+    margin-top: 15px;
+    padding-top: 185px;
     width: 520px;
     border-bottom: 5px solid var(--grey);
+    border-top: 2px dashed var(--grey);
 }
 
 .graphBar {
@@ -142,6 +144,12 @@ input[type=button]
     padding: 0px;
     transition: 2s;
     margin-top: -200px;
+}
+
+.graphNum p {
+    display: inline-block;
+    width: 30px;
+    margin: 0px 15px;
 }
 
 .blue {

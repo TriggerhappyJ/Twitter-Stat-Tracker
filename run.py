@@ -28,18 +28,18 @@ def getSearchedStats(query):
     # Grabs specific data wanted (todays count, weekly count)
     dayCount = "{:,}".format(countData.data[-1]['tweet_count'])
     weekCount = "{:,}".format(countData.meta['total_tweet_count'])
-    print(query, dayCount, weekCount)
+    print(countData)
 
     return {'dayCount':str(dayCount), 
     'weekCount':str(weekCount), 
     'searchTerm':query, 
-    'b1':countData.data[0]['tweet_count'],
-    'b2':countData.data[1]['tweet_count'],
-    'b3':countData.data[2]['tweet_count'],
-    'b4':countData.data[3]['tweet_count'],
-    'b5':countData.data[4]['tweet_count'],
-    'b6':countData.data[5]['tweet_count'],
-    'b7':countData.data[6]['tweet_count'], 
+    'b1':countData.data[1]['tweet_count'],
+    'b2':countData.data[2]['tweet_count'],
+    'b3':countData.data[3]['tweet_count'],
+    'b4':countData.data[4]['tweet_count'],
+    'b5':countData.data[5]['tweet_count'],
+    'b6':countData.data[6]['tweet_count'],
+    'b7':countData.data[-1]['tweet_count'], 
     }
 
 @app.route('/')

@@ -38,23 +38,34 @@
             <input type="button" value="Search" id="submit">
         </form>
     </div>
-    <h2><span class="blue term">#example</span></h2>
+    <h2><span class="blue term">#hashtag</span></h2>
     <div>
         <div class="countContainer">
             <div class="numContainer">
             <span class="medCounter" id="dayCount">0</span>
             </div>
-            <h4>Tweets sent <span class="preposition">with </span><span class="blue term">#example</span> today</h4>
+            <h4>Tweets sent <span class="preposition">with </span><span class="blue term">#hashtag</span> today</h4>
         </div>
         <div class="countContainer">
             <div class="numContainer">
             <span class="medCounter" id="weekCount">0</span>
             </div>
-            <h4>Tweets sent <span class="preposition">with </span><span class="blue term">#example</span> in the last 7 days</h4>
+            <h4>Tweets sent <span class="preposition">with </span><span class="blue term">#hashtag</span> in the last 7 days</h4>
 
         </div>
     </div>
+    <div class="graphNum">
+        <p id="g1">0</p>
+        <p id="g2">0</p>
+        <p id="g3">0</p>
+        <p id="g4">0</p>
+        <p id="g5">0</p>
+        <p id="g6">0</p>
+        <p id="g7">0</p>
+    </div>
+    
     <div class="graphContainer">
+        
         <span class="graphBar" id="b1"></span>
         <span class="graphBar" id="b2"></span>
         <span class="graphBar" id="b3"></span>
@@ -63,7 +74,7 @@
         <span class="graphBar" id="b6"></span>
         <span class="graphBar" id="b7"></span>
     </div>
-    <h4>Last 7 days of Tweets sent <span class="preposition">with </span><span class="blue term">#example</span></h4>
+    <h4>Last 7 days of Tweets sent <span class="preposition">with </span><span class="blue term">#hashtag</span></h4>
     <p>Not affiliated with Twitter, Twitter is a Trademark of Twitter, Inc.</p>
 
 </div>
@@ -130,14 +141,25 @@ document.querySelector('#submit').addEventListener('click', () => {
     document.querySelector("#dayCount").textContent=searchData.dayCount;
     document.querySelector("#weekCount").textContent=searchData.weekCount;
 
-    var b1 = searchData.b1
-    var b2 = searchData.b2
-    var b3 = searchData.b3
-    var b4 = searchData.b4
-    var b5 = searchData.b5
-    var b6 = searchData.b6
-    var b7 = searchData.b7
-    const largest = Math.max(b1, b2, b3, b4, b5, b6, b7)
+    var b1 = searchData.b1;
+    var b2 = searchData.b2;
+    var b3 = searchData.b3;
+    var b4 = searchData.b4;
+    var b5 = searchData.b5;
+    var b6 = searchData.b6;
+    var b7 = searchData.b7;
+
+    document.getElementById("g1").textContent=numeral(searchData.b1).format('0 a');
+    document.getElementById("g2").textContent=numeral(searchData.b2).format('0 a');
+    document.getElementById("g3").textContent=numeral(searchData.b3).format('0 a');
+    document.getElementById("g4").textContent=numeral(searchData.b4).format('0 a');
+    document.getElementById("g5").textContent=numeral(searchData.b5).format('0 a');
+    document.getElementById("g6").textContent=numeral(searchData.b6).format('0 a');
+    document.getElementById("g7").textContent=numeral(searchData.b7).format('0 a');
+    console.log(numeral(searchData.b7).format('0 a'));
+
+
+    const largest = Math.max(b1, b2, b3, b4, b5, b6, b7);
 
     document.querySelector('#b1').style.height = ((b1/largest)*200).toString()+'px';
     document.querySelector('#b2').style.height = ((b2/largest)*200).toString()+'px';
