@@ -15,4 +15,4 @@ Has search for user to see how many tweets were sent by a specific user or with 
 - `Numeral.js 2.0.6` (Number formatting)
 
 
-<sub>I would of liked to of used twitter-api-v2 javascript library to not of had to rely on a python backend but became to complicated to implement so stuck with tweepy for twitter api interaction</sub>
+<sub>I would of liked to of used the twitter-api-v2 javascript library to not have to rely on a python backend but became too complicated to implement so stuck with tweepy for twitter api interaction</sub>
