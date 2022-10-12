@@ -1,4 +1,3 @@
-from distutils.log import debug
 from flask import *
 import tweepy
 
@@ -7,12 +6,14 @@ app = Flask(__name__)
 # Create API object
 api = tweepy.Client(bearer_token='AAAAAAAAAAAAAAAAAAAAAGFJhwEAAAAAtmgQqi4yRSbewBgx1Kd7%2FbfvrEM%3DNmdOePO17SLwaJpBtpdYJUVh9rOUOjUhwy5NNJJjm4XcRbcu6T')
 
-searchTerm = '#example'
+# Search variable to use globally
+searchTerm = ''
 
 # Uses user query to retrieve data from api
 def getSearchedStats(query):
     
-    # Makes sure query will get correct results
+    # Fixes up user search to either search a hashtag even if no # is included. 
+    # Will only search username if @ is included by user
     if '@' in query:
         fixedQuery = 'from:'+query.lstrip('@')
     elif '#' in query:
@@ -21,15 +22,14 @@ def getSearchedStats(query):
         fixedQuery = '#'+query
         query = fixedQuery
 
-
     # Retieves data from api
     countData = api.get_recent_tweets_count(fixedQuery, granularity='day')
 
     # Grabs specific data wanted (todays count, weekly count)
     dayCount = "{:,}".format(countData.data[-1]['tweet_count'])
     weekCount = "{:,}".format(countData.meta['total_tweet_count'])
-    print(countData)
 
+    # Returns data for both main counts and graph
     return {'dayCount':str(dayCount), 
     'weekCount':str(weekCount), 
     'searchTerm':query, 

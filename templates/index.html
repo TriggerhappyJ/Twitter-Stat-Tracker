@@ -3,8 +3,7 @@
 {% block title %}Twitter Satistics{% endblock %}
 
 {% block content %}
-
-
+<!--Estimated counts section-->
 <div class="container">
     <h1>What's happening on <span class="blue">Twitter</span> today?</h1>
     <div>
@@ -30,30 +29,34 @@
     <p>Estimated counts based off data from internetlivestats.com</p>
 </div>
 <hr class="solid">
+
+<!--Seach section-->
 <div class="container">
     <div class="statsSearch">
         <h3>Look for stats of a <span class="blue">#hashtag</u></span> or <span class="blue">@username</span></h3>
-        <form id="search">
+        <form id="search" onsubmit="return false">
             <input type="text" placeholder="#example" id="searchTerm">
             <input type="button" value="Search" id="submit">
         </form>
     </div>
-    <h2><span class="blue term">#hashtag</span></h2>
+    <h2><span class="blue term">#example</span></h2>
     <div>
         <div class="countContainer">
             <div class="numContainer">
             <span class="medCounter" id="dayCount">0</span>
             </div>
-            <h4>Tweets sent <span class="preposition">with </span><span class="blue term">#hashtag</span> today</h4>
+            <h4>Tweets sent <span class="preposition">with </span><span class="blue term">#example</span> today</h4>
         </div>
         <div class="countContainer">
             <div class="numContainer">
             <span class="medCounter" id="weekCount">0</span>
             </div>
-            <h4>Tweets sent <span class="preposition">with </span><span class="blue term">#hashtag</span> in the last 7 days</h4>
+            <h4>Tweets sent <span class="preposition">with </span><span class="blue term">#example</span> in the last 7 days</h4>
 
         </div>
     </div>
+
+    <!--Graph for last 7 days of data-->
     <div class="graphNum">
         <p id="g1">0</p>
         <p id="g2">0</p>
@@ -65,7 +68,6 @@
     </div>
     
     <div class="graphContainer">
-        
         <span class="graphBar" id="b1"></span>
         <span class="graphBar" id="b2"></span>
         <span class="graphBar" id="b3"></span>
@@ -74,11 +76,14 @@
         <span class="graphBar" id="b6"></span>
         <span class="graphBar" id="b7"></span>
     </div>
-    <h4>Last 7 days of Tweets sent <span class="preposition">with </span><span class="blue term">#hashtag</span></h4>
+
+    <!--Disclaimer-->
+    <h4>Last 7 days of Tweets sent <span class="preposition">with </span><span class="blue term">#example</span></h4>
     <p>Not affiliated with Twitter, Twitter is a Trademark of Twitter, Inc.</p>
 
 </div>
 
+<!--This script calculates and updates the estimated tweet counts-->
 <script>
 var current = new Date();
 
@@ -87,7 +92,7 @@ let totalDay =  current.getSeconds() + (((current.getHours() * 60) + current.get
 let totalWeek = weekCalc();
 let totalYear = yearCalc();
 
-// Calculates estimated tweet count for week
+// Calculates estimated tweet count for week based of days passed this week
 function weekCalc()
 {
     if (current.getDay() == 0) {
@@ -98,78 +103,81 @@ function weekCalc()
     return totalDay+((((todayNum*24)*60)*60)*secondAmount);
 }
 
+// Calculates the day of the year (1-365) and then estimates tweet count based of days passed
 function yearCalc()
 {
     const getDayYear = date => Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
     return (((((getDayYear(new Date())*24)*60)*60)*secondAmount)+totalDay)
 }
 
+// Continusly updates the counts on page with the esitmated totals and adds more on each 100 milliseconds
 setInterval(updateTotals, 100)
 function updateTotals()
 {
     document.getElementById("totalToday").textContent=totalDay.toLocaleString("en-US");
     document.getElementById("totalWeek").textContent=totalWeek.toLocaleString("en-US");
     document.getElementById("totalYear").textContent=totalYear.toLocaleString("en-US");
+    // Second amount divided by 10 to match amount to increase per 100 milliseconds
     totalDay += Math.trunc(secondAmount/10);
     totalWeek += Math.trunc(secondAmount/10);
     totalYear += Math.trunc(secondAmount/10);
 }
 </script>    
 
+<!--This script handles sending the search data and updating the search section with data-->
 <script>
+search('#example')
+
+// Gets search data from input and runs search function
 document.querySelector('#submit').addEventListener('click', () => {
     var searchTerm = document.querySelector('#searchTerm').value;
-    
+    search(searchTerm);
+})
+
+// Sends and then retieves search data before updating search section
+function search(searchTerm){    
+    // Send data to flask backend
     $.post("/search", {
         searchTerm: searchTerm
     });
 
+    // Retireve data from backend and parse it from JSON
     $.get("/search", function(searchData) {
     var searchData = $.parseJSON(searchData)
-
-
-
-    console.log(searchData)
     
+    // Updates text to match search type (either by for a username or with for a hashtag)
     if (searchData.searchTerm.includes('@')){
         document.querySelectorAll(".preposition").forEach(elem => elem.textContent='by ')
     } else {
         document.querySelectorAll(".preposition").forEach(elem => elem.textContent='with ')
     }
 
+    // Updates text with searach term and day/week values
     document.querySelectorAll(".term").forEach(elem => elem.textContent=searchData.searchTerm);
     document.querySelector("#dayCount").textContent=searchData.dayCount;
     document.querySelector("#weekCount").textContent=searchData.weekCount;
 
-    var b1 = searchData.b1;
-    var b2 = searchData.b2;
-    var b3 = searchData.b3;
-    var b4 = searchData.b4;
-    var b5 = searchData.b5;
-    var b6 = searchData.b6;
-    var b7 = searchData.b7;
 
-    document.getElementById("g1").textContent=numeral(searchData.b1).format('0 a');
-    document.getElementById("g2").textContent=numeral(searchData.b2).format('0 a');
-    document.getElementById("g3").textContent=numeral(searchData.b3).format('0 a');
-    document.getElementById("g4").textContent=numeral(searchData.b4).format('0 a');
-    document.getElementById("g5").textContent=numeral(searchData.b5).format('0 a');
-    document.getElementById("g6").textContent=numeral(searchData.b6).format('0 a');
-    document.getElementById("g7").textContent=numeral(searchData.b7).format('0 a');
-    console.log(numeral(searchData.b7).format('0 a'));
+    // Sets search data into a array
+    var bData = [searchData.b1, searchData.b2, searchData.b3, searchData.b4, searchData.b5, searchData.b6, searchData.b7]
+    
+    // Gets search data values and adds them to graph labels, also shortens them based on size (using numeral library)
+    var g = 1
+    for (var i in bData) {
+        document.getElementById('g'+g).textContent=numeral(bData[i]).format('0 a');
+        g++;
+    }
 
-
-    const largest = Math.max(b1, b2, b3, b4, b5, b6, b7);
-
-    document.querySelector('#b1').style.height = ((b1/largest)*200).toString()+'px';
-    document.querySelector('#b2').style.height = ((b2/largest)*200).toString()+'px';
-    document.querySelector('#b3').style.height = ((b3/largest)*200).toString()+'px';
-    document.querySelector('#b4').style.height = ((b4/largest)*200).toString()+'px';
-    document.querySelector('#b5').style.height = ((b5/largest)*200).toString()+'px';
-    document.querySelector('#b6').style.height = ((b6/largest)*200).toString()+'px';
-    document.querySelector('#b7').style.height = ((b7/largest)*200).toString()+'px';
+    // Calculates largest values of last 7 days
+    // Then uses that to calculate a height for each bar relative to largest and updates height
+    const largest = Math.max(bData[0], bData[1], bData[2], bData[3], bData[4], bData[5], bData[6]);
+    var b = 1
+    for (var i in bData) {
+        document.getElementById('b'+b).style.height = ((bData[i]/largest)*200).toString()+'px';
+        b++;
+    }
 
 })
-})
+}
 </script>
 {% endblock %}
