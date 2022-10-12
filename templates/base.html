@@ -8,31 +8,25 @@
     <title>{% block title %}{% endblock %}</title>
     <meta name="description" content="What's happening on Twitter today?" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!--Style sheets-->
     <link rel="stylesheet" href="{{ url_for('static', filename='fonts.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='screen.css') }}" />
+
+    <!--Libraries used, JQuery (General Use), Numeral.js (Number Formatting)-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
-
-
     {% endblock %}
   </head>
 
   <body>
-
     <div class="navbar">
       <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Twitter-logo.svg" width="32" height="22">
       <h4>Twitter Statistics</h4>
+      <p style="padding-top: 10px;">By Jacob Wheeler</p>
     </div>
-
-    {% block content %}{% endblock %}
-
-    {% block footer %}
-    <div id="footer">
-      {{ disclaimer|upper }}
-    </div>
+    {% block content %}
     {% endblock %}
-
   </body>
   
-
 </html>
