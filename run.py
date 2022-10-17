@@ -12,7 +12,11 @@ searchTerm = 'example'
 
 # Uses user query to retrieve data from api
 def getSearchedStats(query):
-    
+
+    # Checks if search is empty, if it is set example search
+    if query == '': 
+        query = 'example'
+
     # Fixes up user search to either search a hashtag even if no # is included. 
     # Will only search username if @ is included by user
     if '@' in query:
