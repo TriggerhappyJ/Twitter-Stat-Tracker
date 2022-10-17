@@ -129,10 +129,18 @@ function updateTotals()
 // Just searched for example data when page is loaded
 search('example')
 
-// Gets search data from input and runs search function
+// Gets search data from input and runs search function when button is clicked
 document.querySelector('#submit').addEventListener('click', () => {
     var searchTerm = document.querySelector('#searchTerm').value;
     search(searchTerm);
+})
+
+// Same as previous but runs search if enter is pressed 
+document.querySelector('#searchTerm').addEventListener('keydown', function(e) {
+    if (e.code === "Enter") {
+        var searchTerm = document.querySelector('#searchTerm').value;
+        search(searchTerm);
+    }
 })
 
 // Sends and then retieves search data before updating search section
@@ -174,11 +182,17 @@ function search(searchTerm){
     // Then uses that to calculate a height for each bar relative to largest and updates height
     const largest = Math.max(bData[0], bData[1], bData[2], bData[3], bData[4], bData[5], bData[6]);
     var b = 1
+    if (largest == 0) {
+        for (var i in bData) {
+        document.getElementById('b'+b).style.height = '0px';
+        b++;
+    }
+    } else {
     for (var i in bData) {
         document.getElementById('b'+b).style.height = ((bData[i]/largest)*200).toString()+'px';
         b++;
     }
-
+    }
 })
 }
 
