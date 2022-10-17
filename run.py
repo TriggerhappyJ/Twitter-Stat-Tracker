@@ -1,5 +1,6 @@
 from flask import *
 import tweepy
+import datetime
 
 app = Flask(__name__)
 
@@ -7,7 +8,7 @@ app = Flask(__name__)
 api = tweepy.Client(bearer_token='AAAAAAAAAAAAAAAAAAAAAGFJhwEAAAAAtmgQqi4yRSbewBgx1Kd7%2FbfvrEM%3DNmdOePO17SLwaJpBtpdYJUVh9rOUOjUhwy5NNJJjm4XcRbcu6T')
 
 # Search variable to use globally
-searchTerm = ''
+searchTerm = 'example'
 
 # Uses user query to retrieve data from api
 def getSearchedStats(query):
@@ -24,14 +25,19 @@ def getSearchedStats(query):
 
     # Retieves data from api
     countData = api.get_recent_tweets_count(fixedQuery, granularity='day')
+    dayCountData = api.get_recent_tweets_count(fixedQuery, granularity='hour')
 
     # Grabs specific data wanted (todays count, weekly count)
-    dayCount = "{:,}".format(countData.data[-1]['tweet_count'])
-    weekCount = "{:,}".format(countData.meta['total_tweet_count'])
+    # For day it gets the data hourly and adds together the data since midnight
+    dayCountList = []
+    for i in range(0, datetime.datetime.now().hour): 
+       dayCountList.append(dayCountData.data[-i+1]['tweet_count'])
+    dayCount = sum(dayCountList)
+    weekCount = countData.meta['total_tweet_count']
 
     # Returns data for both main counts and graph
-    return {'dayCount':str(dayCount), 
-    'weekCount':str(weekCount), 
+    return {'dayCount':dayCount, 
+    'weekCount':weekCount, 
     'searchTerm':query, 
     'b1':countData.data[1]['tweet_count'],
     'b2':countData.data[2]['tweet_count'],
@@ -39,7 +45,7 @@ def getSearchedStats(query):
     'b4':countData.data[4]['tweet_count'],
     'b5':countData.data[5]['tweet_count'],
     'b6':countData.data[6]['tweet_count'],
-    'b7':countData.data[-1]['tweet_count'], 
+    'b7':dayCount, 
     }
 
 @app.route('/')

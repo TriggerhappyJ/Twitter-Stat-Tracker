@@ -1,5 +1,6 @@
 :root {
     --blue: #1DA1F2;
+    --dkishBlue: #177FBF;
     --dkblue: #15202B;
     --ltgrey: #4c5259;
     --grey: #292F33;
@@ -143,8 +144,12 @@ input[type=button]
     margin: 0px 15px;
     display: inline-block;
     padding: 0px;
-    transition: 2s;
+    transition: height 1.5s, background-color 0.4s;
     margin-top: -200px;
+}
+
+.graphBar:hover {
+    background-color: var(--dkishBlue);
 }
 
 .graphNum p {

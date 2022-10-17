@@ -68,13 +68,13 @@
     </div>
     
     <div class="graphContainer">
-        <span class="graphBar" id="b1"></span>
-        <span class="graphBar" id="b2"></span>
-        <span class="graphBar" id="b3"></span>
-        <span class="graphBar" id="b4"></span>
-        <span class="graphBar" id="b5"></span>
-        <span class="graphBar" id="b6"></span>
-        <span class="graphBar" id="b7"></span>
+        <span class="graphBar" title="" id="b1"></span>
+        <span class="graphBar" title="" id="b2"></span>
+        <span class="graphBar" title="" id="b3"></span>
+        <span class="graphBar" title="" id="b4"></span>
+        <span class="graphBar" title="" id="b5"></span>
+        <span class="graphBar" title="" id="b6"></span>
+        <span class="graphBar" title="" id="b7"></span>
     </div>
 
     <!--Disclaimer-->
@@ -126,7 +126,8 @@ function updateTotals()
 
 <!--This script handles sending the search data and updating the search section with data-->
 <script>
-search('#example')
+// Just searched for example data when page is loaded
+search('example')
 
 // Gets search data from input and runs search function
 document.querySelector('#submit').addEventListener('click', () => {
@@ -154,8 +155,8 @@ function search(searchTerm){
 
     // Updates text with searach term and day/week values
     document.querySelectorAll(".term").forEach(elem => elem.textContent=searchData.searchTerm);
-    document.querySelector("#dayCount").textContent=searchData.dayCount;
-    document.querySelector("#weekCount").textContent=searchData.weekCount;
+    document.querySelector("#dayCount").textContent=searchData.dayCount.toLocaleString("en-US");
+    document.querySelector("#weekCount").textContent=searchData.weekCount.toLocaleString("en-US");
 
 
     // Sets search data into a array
@@ -165,6 +166,7 @@ function search(searchTerm){
     var g = 1
     for (var i in bData) {
         document.getElementById('g'+g).textContent=numeral(bData[i]).format('0 a');
+        document.getElementById('b'+g).title=(bData[i]);
         g++;
     }
 
@@ -179,5 +181,7 @@ function search(searchTerm){
 
 })
 }
+
+
 </script>
 {% endblock %}
