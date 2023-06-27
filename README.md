@@ -1,4 +1,5 @@
 # A Simple Twitter Stat Tracker
+**Thanks to Twitter's API changes this no longer works...**
 Estimates the total tweets send today, this week, and this year.  
 `Estimated data based off internetlivestats.com`
 
